@@ -1,0 +1,14 @@
+<Application x:Class="BringLater.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             ShutdownMode="OnExplicitShutdown">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <!-- Index 0 is the palette; Theme swaps it when Windows switches between light and dark. -->
+        <ResourceDictionary Source="UI/Colors.Light.xaml" />
+        <ResourceDictionary Source="UI/Controls.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

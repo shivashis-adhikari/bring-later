@@ -1,0 +1,79 @@
+<Window x:Class="BringLater.UI.TrayFlyout" x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Bring Later"
+        Style="{StaticResource PopupWindow}">
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="Visible" />
+  </Window.Resources>
+
+  <ContentControl Style="{StaticResource PopupCard}">
+    <StackPanel Width="368">
+      <Grid Margin="16,10,8,8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Image Source="{StaticResource LogoMark}" Width="18" Height="18" Margin="0,0,10,0" />
+          <TextBlock Text="Snoozed" Style="{StaticResource Text.Strong}" />
+        </StackPanel>
+        <Button Grid.Column="1" Content="&#xE713;" Style="{StaticResource Button.Icon}" Click="OnSettings"
+                ToolTip="Settings" AutomationProperties.Name="Settings" />
+      </Grid>
+      <Rectangle Style="{StaticResource Divider}" />
+
+      <!-- Snoozed windows, soonest first -->
+      <ScrollViewer MaxHeight="376" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                    Visibility="{Binding HasRows, Converter={StaticResource Visible}}">
+        <ItemsControl ItemsSource="{Binding Rows}" Margin="0,4">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="16,8,8,8" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid Width="24" Height="24" Margin="0,0,12,0" VerticalAlignment="Center">
+                  <Image Source="{Binding Icon}" RenderOptions.BitmapScalingMode="HighQuality"
+                         Visibility="{Binding HasIcon, Converter={StaticResource Visible}}" />
+                </Grid>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Title}" Style="{StaticResource Text}" />
+                  <TextBlock Text="{Binding Subtitle}" Style="{StaticResource Text.Caption}" Margin="0,1,0,0" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
+                  <Button Content="&#xE823;" Style="{StaticResource Button.Icon}" Click="OnChangeTime" Tag="{Binding Id}"
+                          ToolTip="Change time" AutomationProperties.Name="{Binding ChangeTimeLabel}" />
+                  <Button Content="&#xE8A7;" Style="{StaticResource Button.Icon}" Click="OnBringBack" Tag="{Binding Id}"
+                          ToolTip="Bring back now" AutomationProperties.Name="{Binding BringBackLabel}" />
+                </StackPanel>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+
+      <!-- Nothing snoozed -->
+      <StackPanel Margin="24,28,24,28" Visibility="{Binding IsEmpty, Converter={StaticResource Visible}}">
+        <TextBlock Text="No snoozed windows" Style="{StaticResource Text.Strong}" HorizontalAlignment="Center" />
+        <TextBlock Text="{Binding EmptyHint}" Style="{StaticResource Text.Caption}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+      </StackPanel>
+
+      <Rectangle Style="{StaticResource Divider}" />
+      <Grid Margin="6,6,6,6">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Button Style="{StaticResource Button.Subtle}" HorizontalAlignment="Left" HorizontalContentAlignment="Left"
+                IsEnabled="{Binding CanSnooze}" Click="OnSnooze">
+          <TextBlock Text="{Binding SnoozeLabel}" Style="{StaticResource Text}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" MaxWidth="220" />
+        </Button>
+        <Button Grid.Column="1" Content="Bring back all" Style="{StaticResource Button.Link}" Click="OnBringBackAll"
+                Visibility="{Binding CanBringBackAll, Converter={StaticResource Visible}}" />
+      </Grid>
+    </StackPanel>
+  </ContentControl>
+</Window>

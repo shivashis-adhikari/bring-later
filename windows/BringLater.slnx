@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/BringLater/BringLater.csproj" />
     <Project Path="src/BringLater.Core/BringLater.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
