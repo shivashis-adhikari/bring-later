@@ -74,8 +74,9 @@ internal sealed class TrayIcon : IDisposable
             Native.SetForegroundWindow(_host.Handle);
             var chosen = Native.TrackPopupMenuEx(menu, Native.TPM_RIGHTBUTTON | Native.TPM_RETURNCMD | Native.TPM_NONOTIFY, at.X, at.Y, _host.Handle, IntPtr.Zero);
             Native.PostMessageW(_host.Handle, Native.WM_NULL, IntPtr.Zero, IntPtr.Zero);
-            if (chosen > 0 && chosen <= items.Count)
-                items[chosen - 1].Invoke?.Invoke();
+            // Run the command after the menu's modal loop has fully unwound, not from inside it.
+            if (chosen > 0 && chosen <= items.Count && items[chosen - 1].Invoke is { } invoke)
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(invoke);
         }
         finally
         {

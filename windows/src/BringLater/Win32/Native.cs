@@ -363,6 +363,9 @@ internal static class Native
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     public static extern int RegisterApplicationRestart(string? commandLine, uint flags);
 
+    public const uint RESTART_NO_PATCH = 4;
+    public const uint RESTART_NO_REBOOT = 8;
+
     [DllImport("kernel32.dll")]
     public static extern int RegisterApplicationRecoveryCallback(ApplicationRecoveryCallback callback, IntPtr parameter, uint pingInterval, uint flags);
 

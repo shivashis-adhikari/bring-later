@@ -416,7 +416,8 @@ internal sealed class TrayApp : IDisposable
         // If we die, Windows restarts us (after a minute of uptime) and the recovery callback shows
         // every hidden window on the way down. Launch-time reconcile then finds them visible and
         // forgets the snoozes. Nothing stays hidden with no way back.
-        if (Native.RegisterApplicationRestart("--background", 0) != 0)
+        // Only after a crash or hang: after a reboot or an update, "Start with Windows" decides.
+        if (Native.RegisterApplicationRestart("--background", Native.RESTART_NO_REBOOT | Native.RESTART_NO_PATCH) != 0)
             Log.Info("Restart after a crash is not available");
         s_recoveryCallback = _ =>
         {

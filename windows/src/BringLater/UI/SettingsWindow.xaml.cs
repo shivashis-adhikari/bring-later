@@ -14,6 +14,8 @@ internal sealed partial class SettingsWindow : Window
         _model = model;
         DataContext = model;
         InitializeComponent();
+        // Taller than a small laptop screen at 125% scaling; scroll instead of running off the edge.
+        MaxHeight = SystemParameters.WorkArea.Height - 32;
         SourceInitialized += (_, _) => Theme.StyleFrame(this);
         PreviewKeyDown += OnPreviewKeyDown;
         Deactivated += (_, _) => StopRecording();
