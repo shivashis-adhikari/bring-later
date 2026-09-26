@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../BringLater.Core/BringLater.Core.csproj" />
+    <InternalsVisibleTo Include="Screenshots" />
   </ItemGroup>
 
   <ItemGroup>

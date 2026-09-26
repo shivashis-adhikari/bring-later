@@ -1,0 +1,81 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Windows (${{ matrix.arch }})
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Test
+        run: dotnet test --project windows/tests/BringLater.Core.Tests
+
+      - name: Publish
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          dotnet publish windows/src/BringLater -c Release -r win-${{ matrix.arch }} -p:Version=$version -o out
+          Move-Item out/BringLater.exe "BringLater-$version-win-${{ matrix.arch }}.exe"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows-${{ matrix.arch }}
+          path: BringLater-*.exe
+
+  mac:
+    name: macOS
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Test
+        run: swift test --package-path mac
+
+      - name: Build
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          VERSION="$version" mac/scripts/bundle.sh
+          mv mac/build/BringLater-mac.zip "BringLater-$version-mac.zip"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: mac
+          path: BringLater-*-mac.zip
+
+  publish:
+    name: Publish release
+    needs: [windows, mac]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          notes="docs/releases/${tag}.md"
+          flags=()
+          # Anything before 1.0 is published as a pre-release.
+          [[ "$tag" == v0.* || "$tag" == *-* ]] && flags+=(--prerelease)
+          (cd dist && sha256sum * > SHA256SUMS.txt)
+          gh release create "$tag" dist/* --title "Bring Later ${tag#v}" --notes-file "$notes" "${flags[@]}"

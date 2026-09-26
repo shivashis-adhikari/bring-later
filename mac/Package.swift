@@ -7,15 +7,9 @@ let package = Package(
     products: [
         .executable(name: "BringLater", targets: ["BringLater"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/sindresorhus/KeyboardShortcuts", exact: "2.4.0"),
-    ],
     targets: [
         .target(name: "BringLaterCore"),
-        .executableTarget(
-            name: "BringLater",
-            dependencies: ["BringLaterCore", "KeyboardShortcuts"]
-        ),
+        .executableTarget(name: "BringLater", dependencies: ["BringLaterCore"]),
         .testTarget(name: "BringLaterCoreTests", dependencies: ["BringLaterCore"]),
     ]
 )

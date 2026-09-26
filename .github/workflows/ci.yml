@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Test
+        run: dotnet test --project windows/tests/BringLater.Core.Tests
+
+      - name: Build
+        run: dotnet build windows/BringLater.slnx -c Release
+
+      - name: Render screenshots
+        run: dotnet run --project windows/tools/Screenshots -c Release --no-build -- out/screenshots
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows-screenshots
+          path: out/screenshots
+
+      - name: Publish exe
+        run: dotnet publish windows/src/BringLater -c Release -r win-x64 -o out/win-x64
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: BringLater-win-x64
+          path: out/win-x64/BringLater.exe
+
+  mac:
+    name: macOS
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Test
+        run: swift test --package-path mac
+
+      - name: Build app
+        run: mac/scripts/bundle.sh
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: BringLater-mac
+          path: mac/build/BringLater-mac.zip

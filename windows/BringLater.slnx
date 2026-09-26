@@ -3,6 +3,9 @@
     <Project Path="src/BringLater/BringLater.csproj" />
     <Project Path="src/BringLater.Core/BringLater.Core.csproj" />
   </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Screenshots/Screenshots.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/BringLater.Core.Tests/BringLater.Core.Tests.csproj" />
   </Folder>
