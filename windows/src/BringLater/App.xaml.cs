@@ -31,7 +31,7 @@ public partial class App : Application
             return;
         }
 
-        var background = e.Args.Contains("--background") || ToastNotificationManagerCompat.WasCurrentProcessToastActivated();
+        var background = e.Args.Contains("--background") || StartAtSignIn.LaunchedAtSignIn() || ToastNotificationManagerCompat.WasCurrentProcessToastActivated();
         Theme.Apply(Theme.Detect());
         _tray = new TrayApp(this);
         _tray.Start(launchedByUser: !background);

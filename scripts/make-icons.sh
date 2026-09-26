@@ -52,4 +52,25 @@ render "$brand/src/menubar-template.svg" 36 "$out/MenuBarTemplate@2x.png"
 render "$brand/mark.svg" 32 "$out/favicon-32.png"
 render "$brand/src/touch-icon.svg" 180 "$out/apple-touch-icon.png"
 
+# Windows Store package: tiles with the mark centered on a transparent background, and plain
+# taskbar sizes ("unplated" means no tile behind them).
+store="$out/store"
+mkdir -p "$store"
+render "$brand/mark.svg" 1024 "$work/mark-1024.png"
+tile() { # tile <name> <width> <height> <mark size>
+  magick "$work/mark-1024.png" -resize "${4}x${4}" -background none -gravity center -extent "${2}x${3}" "$store/$1"
+}
+for scale in 100 200; do
+  f=$((scale / 100))
+  tile "Square150x150Logo.scale-$scale.png" $((150 * f)) $((150 * f)) $((100 * f))
+  tile "Wide310x150Logo.scale-$scale.png" $((310 * f)) $((150 * f)) $((100 * f))
+  tile "Square44x44Logo.scale-$scale.png" $((44 * f)) $((44 * f)) $((44 * f))
+  tile "StoreLogo.scale-$scale.png" $((50 * f)) $((50 * f)) $((50 * f))
+done
+for size in 16 24 32; do render "$brand/src/mark-small.svg" "$size" "$store/Square44x44Logo.targetsize-${size}.png"; done
+for size in 48 256; do tile "Square44x44Logo.targetsize-${size}.png" "$size" "$size" "$size"; done
+for size in 16 24 32 48 256; do
+  cp "$store/Square44x44Logo.targetsize-${size}.png" "$store/Square44x44Logo.targetsize-${size}_altform-unplated.png"
+done
+
 echo "Icons written to $out"

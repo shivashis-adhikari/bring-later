@@ -36,6 +36,9 @@ internal sealed class SettingsModel : Observable
     }
 
     public string Version => Loc.F("settings.version", UpdateChecker.CurrentText);
+
+    /// <summary>The Store updates its own installs, so only the GitHub build checks.</summary>
+    public bool ShowUpdates => !Paths.IsStore;
     public IReadOnlyList<TimeOption> Times { get; }
 
     public Shortcut Shortcut

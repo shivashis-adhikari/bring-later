@@ -380,4 +380,9 @@ internal static class Native
 
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr LoadLibraryW(string name);
+
+    public const int APPMODEL_ERROR_NO_PACKAGE = 15700;
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+    public static extern int GetCurrentPackageFullName(ref uint length, char[]? name);
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Microsoft Store package. pack.ps1 fills in the version and architecture. The identity comes
+     from Partner Center (Product identity) and must match it exactly. -->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap desktop com rescap">
+
+  <Identity
+    Name="ShivashisAdhikari.BringLater"
+    Publisher="CN=0B878C51-C5D5-4D23-BC33-81F752691166"
+    Version="$VERSION$"
+    ProcessorArchitecture="$ARCH$" />
+
+  <Properties>
+    <DisplayName>Bring Later</DisplayName>
+    <PublisherDisplayName>Shivashis Adhikari</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Applications>
+    <Application Id="BringLater" Executable="BringLater.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="Bring Later"
+        Description="Snooze a window until you need it."
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+      </uap:VisualElements>
+
+      <Extensions>
+        <desktop:Extension Category="windows.startupTask" Executable="BringLater.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="BringLater" Enabled="false" DisplayName="Bring Later" />
+        </desktop:Extension>
+
+        <!-- Lets the notification buttons (Show, Snooze 1 hour) reach the app, or start it if it isn't running. -->
+        <desktop:Extension Category="windows.toastNotificationActivation">
+          <desktop:ToastNotificationActivation ToastActivatorCLSID="6E1B7A4C-3D52-4F8B-9C1E-2A7D5B8F0C43" />
+        </desktop:Extension>
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:ExeServer Executable="BringLater.exe" Arguments="-ToastActivated" DisplayName="Bring Later notifications">
+              <com:Class Id="6E1B7A4C-3D52-4F8B-9C1E-2A7D5B8F0C43" DisplayName="Bring Later notifications" />
+            </com:ExeServer>
+          </com:ComServer>
+        </com:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>
