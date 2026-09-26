@@ -8,7 +8,7 @@
 <p align="center"><strong>Snooze a window until you actually need it.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/shivashis-adhikari/bring-later/releases">Download</a> ·
+  <a href="https://github.com/shivashis-adhikari/bring-later/releases/latest">Download</a> ·
   <a href="https://shivashis-adhikari.github.io/bring-later/">Website</a> ·
   <a href="#typing-a-time">Typing a time</a> ·
   <a href="#building-from-source">Build from source</a>

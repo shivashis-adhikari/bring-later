@@ -75,7 +75,7 @@ jobs:
           tag="${GITHUB_REF_NAME}"
           notes="docs/releases/${tag}.md"
           flags=()
-          # Anything before 1.0 is published as a pre-release.
-          [[ "$tag" == v0.* || "$tag" == *-* ]] && flags+=(--prerelease)
+          # Tags like v1.2.0-beta.1 are published as pre-releases.
+          [[ "$tag" == *-* ]] && flags+=(--prerelease)
           (cd dist && sha256sum * > SHA256SUMS.txt)
           gh release create "$tag" dist/* --title "Bring Later ${tag#v}" --notes-file "$notes" "${flags[@]}"
