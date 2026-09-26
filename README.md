@@ -19,10 +19,9 @@
 </p>
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/panel-dark.png">
-    <img src="docs/images/panel-light.png" alt="The Bring Later panel over a browser window, offering In 1 hour, This evening, Tomorrow morning, Next week, and Pick a date and time." width="474">
-  </picture>
+  <a href="https://shivashis-adhikari.github.io/bring-later/bring-later.mp4">
+    <img src="docs/images/video.jpg" alt="Watch the 21-second video: the Bring Later panel over a browser window, with This evening at 7:00 PM selected." width="800">
+  </a>
 </p>
 
 When a window isn't needed right now, you have three options: leave it open and let it clutter the screen, minimize it and probably forget it, or close it and hope you remember. Bring Later adds a fourth.

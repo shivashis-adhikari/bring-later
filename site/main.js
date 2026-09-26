@@ -1,5 +1,5 @@
-// Two small jobs: point the download buttons at the files in the newest release, and put the
-// Mac button first for Mac visitors. Without JavaScript, the buttons open the releases page.
+// Point the download buttons at the files in the newest release, put the Mac button first for Mac
+// visitors, and play the demo silently. Without JavaScript, the buttons open the releases page.
 
 const nav = document.querySelector("[data-nav]");
 const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 8);
@@ -12,6 +12,19 @@ const secondary = document.querySelector('[data-download="secondary"]');
 if (isMac) {
   primary.textContent = "Download for Mac";
   secondary.textContent = "Download for Windows";
+}
+
+// The demo loops without sound; its controls turn the sound on. Reduced motion and Data Saver keep it
+// on the poster. Frame 0 is the poster, so each loop starts just after it.
+const demo = document.querySelector("[data-demo]");
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !navigator.connection?.saveData) {
+  demo.muted = true;
+  demo.addEventListener("ended", () => {
+    if (!demo.muted) return;
+    demo.currentTime = 0.05;
+    demo.play().catch(() => {});
+  });
+  demo.play().catch(() => {});
 }
 
 const assetFor = {
