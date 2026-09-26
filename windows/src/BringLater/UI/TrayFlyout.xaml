@@ -1,6 +1,7 @@
 <Window x:Class="BringLater.UI.TrayFlyout" x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:BringLater"
         Title="Bring Later"
         Style="{StaticResource PopupWindow}">
   <Window.Resources>
@@ -16,10 +17,10 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
           <Image Source="{StaticResource LogoMark}" Width="18" Height="18" Margin="0,0,10,0" />
-          <TextBlock Text="Snoozed" Style="{StaticResource Text.Strong}" />
+          <TextBlock Text="{l:T flyout.title}" Style="{StaticResource Text.Strong}" />
         </StackPanel>
         <Button Grid.Column="1" Content="&#xE713;" Style="{StaticResource Button.Icon}" Click="OnSettings"
-                ToolTip="Settings" AutomationProperties.Name="Settings" />
+                ToolTip="{l:T flyout.settings}" AutomationProperties.Name="{l:T flyout.settings}" />
       </Grid>
       <Rectangle Style="{StaticResource Divider}" />
 
@@ -45,9 +46,9 @@
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
                   <Button Content="&#xE823;" Style="{StaticResource Button.Icon}" Click="OnChangeTime" Tag="{Binding Id}"
-                          ToolTip="Change time" AutomationProperties.Name="{Binding ChangeTimeLabel}" />
+                          ToolTip="{l:T flyout.changeTime}" AutomationProperties.Name="{Binding ChangeTimeLabel}" />
                   <Button Content="&#xE8A7;" Style="{StaticResource Button.Icon}" Click="OnBringBack" Tag="{Binding Id}"
-                          ToolTip="Bring back now" AutomationProperties.Name="{Binding BringBackLabel}" />
+                          ToolTip="{l:T flyout.bringBack}" AutomationProperties.Name="{Binding BringBackLabel}" />
                 </StackPanel>
               </Grid>
             </DataTemplate>
@@ -57,7 +58,7 @@
 
       <!-- Nothing snoozed -->
       <StackPanel Margin="24,28,24,28" Visibility="{Binding IsEmpty, Converter={StaticResource Visible}}">
-        <TextBlock Text="No snoozed windows" Style="{StaticResource Text.Strong}" HorizontalAlignment="Center" />
+        <TextBlock Text="{l:T flyout.empty}" Style="{StaticResource Text.Strong}" HorizontalAlignment="Center" />
         <TextBlock Text="{Binding EmptyHint}" Style="{StaticResource Text.Caption}" HorizontalAlignment="Center" Margin="0,4,0,0" />
       </StackPanel>
 
@@ -71,7 +72,7 @@
                 IsEnabled="{Binding CanSnooze}" Click="OnSnooze" Margin="0,0,4,0">
           <TextBlock Text="{Binding SnoozeLabel}" Style="{StaticResource Text}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
         </Button>
-        <Button Grid.Column="1" Content="Bring back all" Style="{StaticResource Button.Link}" Click="OnBringBackAll"
+        <Button Grid.Column="1" Content="{l:T flyout.bringBackAll}" Style="{StaticResource Button.Link}" Click="OnBringBackAll"
                 Visibility="{Binding CanBringBackAll, Converter={StaticResource Visible}}" />
       </Grid>
     </StackPanel>

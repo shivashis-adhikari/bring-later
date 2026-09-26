@@ -1,6 +1,7 @@
 <Window x:Class="BringLater.UI.SnoozePanel" x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:BringLater"
         Title="Bring Later"
         Style="{StaticResource PopupWindow}">
   <Window.Resources>
@@ -95,14 +96,14 @@
       <!-- Why it can't be snoozed -->
       <StackPanel Visibility="{Binding IsRefused, Converter={StaticResource Visible}}">
         <TextBlock Text="{Binding Message}" Style="{StaticResource Text.Paragraph}" Margin="0,0,0,16" />
-        <Button Content="Close" Style="{StaticResource Button.Standard}" HorizontalAlignment="Right" Click="OnClose" />
+        <Button Content="{l:T panel.close}" Style="{StaticResource Button.Standard}" HorizontalAlignment="Right" Click="OnClose" />
       </StackPanel>
 
       <!-- Typed time -->
       <TextBox x:Name="Input" Style="{StaticResource InputBox}" Tag="{Binding Placeholder}"
                Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
                Visibility="{Binding ShowInput, Converter={StaticResource Visible}}"
-               AutomationProperties.Name="Time to bring the window back" />
+               AutomationProperties.Name="{l:T panel.inputName}" />
 
       <Grid Height="36" Margin="0,6,0,0" Visibility="{Binding ShowResult, Converter={StaticResource Visible}}">
         <Grid.ColumnDefinitions>
@@ -142,7 +143,7 @@
               </Style.Triggers>
             </Style>
           </Border.Style>
-          <TextBlock Text="Enter" Style="{StaticResource KeycapText}" />
+          <TextBlock Text="{l:T panel.enter}" Style="{StaticResource KeycapText}" />
         </Border>
       </Grid>
 
@@ -175,12 +176,12 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
-          <Button Content="&#xE72B;" Style="{StaticResource Button.Icon}" Click="OnBack" ToolTip="Back" AutomationProperties.Name="Back" />
+          <Button Content="&#xE72B;" Style="{StaticResource Button.Icon}" Click="OnBack" ToolTip="{l:T panel.back}" AutomationProperties.Name="{l:T panel.back}" />
           <TextBlock Grid.Column="1" Text="{Binding MonthTitle}" Style="{StaticResource Text.Strong}" VerticalAlignment="Center" Margin="4,0,0,0" />
           <Button Grid.Column="2" Content="&#xE76B;" Style="{StaticResource Button.Icon}" FontSize="12" Click="OnPreviousMonth"
-                  IsEnabled="{Binding CanGoBack}" ToolTip="Previous month" AutomationProperties.Name="Previous month" />
+                  IsEnabled="{Binding CanGoBack}" ToolTip="{l:T panel.previousMonth}" AutomationProperties.Name="{l:T panel.previousMonth}" />
           <Button Grid.Column="3" Content="&#xE76C;" Style="{StaticResource Button.Icon}" FontSize="12" Click="OnNextMonth"
-                  IsEnabled="{Binding CanGoForward}" ToolTip="Next month" AutomationProperties.Name="Next month" />
+                  IsEnabled="{Binding CanGoForward}" ToolTip="{l:T panel.nextMonth}" AutomationProperties.Name="{l:T panel.nextMonth}" />
         </Grid>
 
         <ItemsControl ItemsSource="{Binding WeekdayHeaders}" HorizontalAlignment="Center">
@@ -215,8 +216,8 @@
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <TextBox x:Name="TimeInput" Style="{StaticResource InputBox}" Text="{Binding PickedTime, UpdateSourceTrigger=PropertyChanged}"
-                   Width="140" HorizontalAlignment="Left" AutomationProperties.Name="Time" />
-          <Button Grid.Column="1" Content="Snooze" Style="{StaticResource Button.Accent}" IsEnabled="{Binding CanPick}" Click="OnPickConfirm" />
+                   Width="140" HorizontalAlignment="Left" AutomationProperties.Name="{l:T panel.time}" />
+          <Button Grid.Column="1" Content="{l:T panel.snooze}" Style="{StaticResource Button.Accent}" IsEnabled="{Binding CanPick}" Click="OnPickConfirm" />
         </Grid>
         <TextBlock Text="{Binding PickResult}" Margin="0,8,0,2">
           <TextBlock.Style>

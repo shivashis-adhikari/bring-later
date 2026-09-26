@@ -28,6 +28,7 @@ internal static class Program
 
         var app = new App();
         app.InitializeComponent();
+        Loc.Use("en");
 
         foreach (var theme in new[] { ThemeKind.Light, ThemeKind.Dark })
         {
@@ -46,6 +47,21 @@ internal static class Program
             Save(Framed(new SettingsWindow(new SettingsModel(new AppSettings(), startAtSignIn: true) { UpdateStatus = "Checks GitHub for a newer release when you ask. Nothing is sent automatically." }), background), output, $"settings-{suffix}");
             Save(Framed(new WelcomeWindow(Shortcut.Default.Parts), background), output, $"welcome-{suffix}");
             Save(Framed(new QuitWindow(3), background), output, $"quit-{suffix}");
+        }
+
+        // The translations, in dark, to check that longer text still fits.
+        Theme.Apply(ThemeKind.Dark);
+        var dark = (Brush)app.FindResource("WindowBackgroundBrush");
+        foreach (var (language, culture) in new[] { ("zh-Hans", "zh-CN"), ("es", "es-ES"), ("hi", "hi-IN") })
+        {
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo(culture);
+            Loc.Use(language);
+            Save(PanelWindow(model => model.Selected = 1), output, $"panel-dark.{language}");
+            Save(PanelWindow(model => model.Query = "fri 2pm"), output, $"panel-typed-dark.{language}");
+            Save(PanelWindow(model => { model.IsPicking = true; model.Pick(Today.AddDays(10)); }), output, $"panel-picker-dark.{language}");
+            Save(Content(new TrayFlyout(FlyoutModel(empty: false))), output, $"flyout-dark.{language}");
+            Save(Framed(new SettingsWindow(new SettingsModel(new AppSettings(), startAtSignIn: true) { UpdateStatus = Loc.T("settings.updatesIdle") }), dark), output, $"settings-dark.{language}");
+            Save(Framed(new WelcomeWindow(Shortcut.Default.Parts), dark), output, $"welcome-dark.{language}");
         }
 
         Console.WriteLine($"Wrote screenshots to {output}");

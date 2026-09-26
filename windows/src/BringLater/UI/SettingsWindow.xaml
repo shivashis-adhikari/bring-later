@@ -1,7 +1,8 @@
 <Window x:Class="BringLater.UI.SettingsWindow" x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Bring Later settings"
+        xmlns:l="clr-namespace:BringLater"
+        Title="{l:T settings.windowTitle}"
         Width="600"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource AppWindow}">
@@ -35,7 +36,7 @@
         </StackPanel>
       </Grid>
 
-      <TextBlock Text="Snoozing" Style="{StaticResource SectionTitle}" />
+      <TextBlock Text="{l:T settings.snoozing}" Style="{StaticResource SectionTitle}" />
 
       <Border Style="{StaticResource SettingCard}">
         <Grid>
@@ -44,15 +45,15 @@
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
-            <TextBlock Text="Keyboard shortcut" Style="{StaticResource CardTitle}" />
-            <TextBlock Text="Opens the snooze panel for the window you're using." Style="{StaticResource CardText}" />
+            <TextBlock Text="{l:T settings.shortcut}" Style="{StaticResource CardTitle}" />
+            <TextBlock Text="{l:T settings.shortcutHint}" Style="{StaticResource CardText}" />
             <TextBlock Text="{Binding ShortcutMessage}" Style="{StaticResource CardText}" Foreground="{DynamicResource CriticalBrush}"
                        Visibility="{Binding HasShortcutMessage, Converter={StaticResource Visible}}" />
           </StackPanel>
           <Button x:Name="ShortcutBox" Grid.Column="1" Style="{StaticResource Button.Standard}" MinWidth="148"
                   Padding="8,5,4,6" VerticalAlignment="Center" Click="OnShortcutClick"
-                  AutomationProperties.Name="Keyboard shortcut. Select to record a new one."
-                  ToolTip="Select, then press the new shortcut. Esc cancels.">
+                  AutomationProperties.Name="{l:T settings.shortcut}"
+                  ToolTip="{l:T settings.shortcutTooltip}">
             <ItemsControl ItemsSource="{Binding ShortcutParts}" Focusable="False">
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -78,11 +79,11 @@
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
-            <TextBlock Text="This evening" Style="{StaticResource CardTitle}" />
-            <TextBlock Text="What &#x201C;this evening&#x201D; and &#x201C;tonight&#x201D; mean." Style="{StaticResource CardText}" />
+            <TextBlock Text="{l:T settings.evening}" Style="{StaticResource CardTitle}" />
+            <TextBlock Text="{l:T settings.eveningHint}" Style="{StaticResource CardText}" />
           </StackPanel>
           <ComboBox Grid.Column="1" Style="{StaticResource Combo}" ItemsSource="{Binding Times}" DisplayMemberPath="Label"
-                    SelectedItem="{Binding Evening}" VerticalAlignment="Center" AutomationProperties.Name="This evening" />
+                    SelectedItem="{Binding Evening}" VerticalAlignment="Center" AutomationProperties.Name="{l:T settings.evening}" />
         </Grid>
       </Border>
 
@@ -93,24 +94,24 @@
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
-            <TextBlock Text="Morning" Style="{StaticResource CardTitle}" />
-            <TextBlock Text="Used by &#x201C;tomorrow morning&#x201D;, &#x201C;next week&#x201D; and dates without a time." Style="{StaticResource CardText}" />
+            <TextBlock Text="{l:T settings.morning}" Style="{StaticResource CardTitle}" />
+            <TextBlock Text="{l:T settings.morningHint}" Style="{StaticResource CardText}" />
           </StackPanel>
           <ComboBox Grid.Column="1" Style="{StaticResource Combo}" ItemsSource="{Binding Times}" DisplayMemberPath="Label"
-                    SelectedItem="{Binding Morning}" VerticalAlignment="Center" AutomationProperties.Name="Morning" />
+                    SelectedItem="{Binding Morning}" VerticalAlignment="Center" AutomationProperties.Name="{l:T settings.morning}" />
         </Grid>
       </Border>
 
       <Border Style="{StaticResource SettingCard}">
         <StackPanel>
-          <TextBlock Text="When a window comes back" Style="{StaticResource CardTitle}" />
-          <TextBlock Text="A notification tells you either way." Style="{StaticResource CardText}" Margin="0,2,0,8" />
-          <RadioButton Content="Show it without switching to it" Style="{StaticResource Radio}" IsChecked="{Binding ShowQuietly}" />
-          <RadioButton Content="Bring it to the front" Style="{StaticResource Radio}" IsChecked="{Binding BringToFront}" />
+          <TextBlock Text="{l:T settings.return}" Style="{StaticResource CardTitle}" />
+          <TextBlock Text="{l:T settings.returnHint}" Style="{StaticResource CardText}" Margin="0,2,0,8" />
+          <RadioButton Content="{l:T settings.returnQuiet}" Style="{StaticResource Radio}" IsChecked="{Binding ShowQuietly}" />
+          <RadioButton Content="{l:T settings.returnFront}" Style="{StaticResource Radio}" IsChecked="{Binding BringToFront}" />
         </StackPanel>
       </Border>
 
-      <TextBlock Text="System" Style="{StaticResource SectionTitle}" />
+      <TextBlock Text="{l:T settings.system}" Style="{StaticResource SectionTitle}" />
 
       <Border Style="{StaticResource SettingCard}">
         <Grid>
@@ -119,11 +120,11 @@
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
-            <TextBlock Text="Start with Windows" Style="{StaticResource CardTitle}" />
-            <TextBlock Text="Bring Later has to be running to bring windows back." Style="{StaticResource CardText}" />
+            <TextBlock Text="{l:T settings.startup}" Style="{StaticResource CardTitle}" />
+            <TextBlock Text="{l:T settings.startupHint}" Style="{StaticResource CardText}" />
           </StackPanel>
           <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitch}" IsChecked="{Binding StartAtSignIn}"
-                    VerticalAlignment="Center" AutomationProperties.Name="Start with Windows" />
+                    VerticalAlignment="Center" AutomationProperties.Name="{l:T settings.startup}" />
         </Grid>
       </Border>
 
@@ -134,21 +135,21 @@
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
           <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
-            <TextBlock Text="Updates" Style="{StaticResource CardTitle}" />
+            <TextBlock Text="{l:T settings.updates}" Style="{StaticResource CardTitle}" />
             <TextBlock Text="{Binding UpdateStatus}" Style="{StaticResource CardText}" />
           </StackPanel>
           <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-            <Button Content="Download" Style="{StaticResource Button.Accent}" Margin="0,0,8,0" Click="OnDownload"
+            <Button Content="{l:T settings.download}" Style="{StaticResource Button.Accent}" Margin="0,0,8,0" Click="OnDownload"
                     Visibility="{Binding HasUpdate, Converter={StaticResource Visible}}" />
-            <Button Content="Check for updates" Style="{StaticResource Button.Standard}" IsEnabled="{Binding CanCheck}" Click="OnCheckUpdates" />
+            <Button Content="{l:T settings.checkUpdates}" Style="{StaticResource Button.Standard}" IsEnabled="{Binding CanCheck}" Click="OnCheckUpdates" />
           </StackPanel>
         </Grid>
       </Border>
 
       <WrapPanel Margin="-8,16,0,0">
-        <Button Content="Source code" Style="{StaticResource Button.Link}" Click="OnOpenLink" Tag="https://github.com/shivashis-adhikari/bring-later" />
-        <Button Content="Report a problem" Style="{StaticResource Button.Link}" Click="OnOpenLink" Tag="https://github.com/shivashis-adhikari/bring-later/issues/new" />
-        <Button Content="Open log folder" Style="{StaticResource Button.Link}" Click="OnOpenLogs" />
+        <Button Content="{l:T settings.source}" Style="{StaticResource Button.Link}" Click="OnOpenLink" Tag="https://github.com/shivashis-adhikari/bring-later" />
+        <Button Content="{l:T settings.report}" Style="{StaticResource Button.Link}" Click="OnOpenLink" Tag="https://github.com/shivashis-adhikari/bring-later/issues/new" />
+        <Button Content="{l:T settings.logs}" Style="{StaticResource Button.Link}" Click="OnOpenLogs" />
       </WrapPanel>
     </StackPanel>
   </ScrollViewer>

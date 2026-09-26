@@ -35,7 +35,7 @@ internal sealed class SettingsModel : Observable
         _startAtSignIn = startAtSignIn;
     }
 
-    public string Version => $"Version {UpdateChecker.CurrentText}";
+    public string Version => Loc.F("settings.version", UpdateChecker.CurrentText);
     public IReadOnlyList<TimeOption> Times { get; }
 
     public Shortcut Shortcut
@@ -48,7 +48,7 @@ internal sealed class SettingsModel : Observable
         }
     }
 
-    public IReadOnlyList<string> ShortcutParts => _recording ? ["Press a shortcut"] : _shortcut.Parts;
+    public IReadOnlyList<string> ShortcutParts => _recording ? [Loc.T("settings.shortcutRecord")] : _shortcut.Parts;
 
     public bool Recording
     {

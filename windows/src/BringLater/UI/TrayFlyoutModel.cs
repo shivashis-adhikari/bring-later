@@ -7,8 +7,8 @@ namespace BringLater.UI;
 internal sealed record SnoozeRow(Guid Id, string Title, string Subtitle, ImageSource? Icon, bool IsClosed)
 {
     public bool HasIcon => Icon is not null;
-    public string BringBackLabel => $"Bring back {Title}";
-    public string ChangeTimeLabel => $"Change time for {Title}";
+    public string BringBackLabel => Loc.F("flyout.bringBackLabel", Title);
+    public string ChangeTimeLabel => Loc.F("flyout.changeTimeLabel", Title);
 }
 
 internal sealed class TrayFlyoutModel : Observable
@@ -19,7 +19,7 @@ internal sealed class TrayFlyoutModel : Observable
 
     public ObservableCollection<SnoozeRow> Rows { get; } = [];
     public string Shortcut { get; }
-    public string EmptyHint => $"Press {Shortcut} on any window to snooze it.";
+    public string EmptyHint => Loc.F("flyout.emptyHint", Shortcut);
     public bool HasRows => Rows.Count > 0;
     public bool IsEmpty => Rows.Count == 0;
     public bool CanBringBackAll => Rows.Count(r => !r.IsClosed) > 1;
@@ -45,7 +45,7 @@ internal sealed class TrayFlyoutModel : Observable
         foreach (var snooze in snoozes.OrderBy(s => s.DueAt))
         {
             var subtitle = snooze.State == SnoozeState.Closed
-                ? $"Window closed · reminder {Format.When(snooze.DueAt, now).ToLowerInvariantFirst()}"
+                ? Loc.F("flyout.closed", Format.When(snooze.DueAt, now).ToLowerInvariantFirst())
                 : $"{snooze.App.Name} · {Format.When(snooze.DueAt, now)}";
             Rows.Add(new SnoozeRow(snooze.Id, snooze.Window.Title, subtitle, IconCache.For(snooze.App, snooze.Window.Ref), snooze.State == SnoozeState.Closed));
         }

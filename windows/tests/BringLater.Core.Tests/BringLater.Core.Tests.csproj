@@ -12,5 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="../../src/BringLater.Core/BringLater.Core.csproj" />
     <None Include="../../../fixtures/*.json" LinkBase="fixtures" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/BringLater/Locales/*.json" LinkBase="locales" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

@@ -79,14 +79,14 @@ internal sealed class TrayApp : IDisposable
         if (!_host.RegisterHotkey(Hotkey))
         {
             Log.Info($"Shortcut {Hotkey} is taken");
-            Notifier.Message("Shortcut unavailable", $"Another app is using {Hotkey}. Choose a different shortcut in Settings.", "Open settings");
+            Notifier.Message(Loc.T("notify.shortcutTakenTitle"), Loc.F("notify.shortcutTakenBody", Hotkey), Loc.T("notify.openSettings"));
         }
 
         StartAtSignIn.RefreshPath();
         if (!_settings.WelcomeShown)
             ShowWelcome();
         else if (launchedByUser)
-            Notifier.Message("Bring Later is running", $"Press {Hotkey} on any window to snooze it.");
+            Notifier.Message(Loc.T("notify.runningTitle"), Loc.F("notify.runningBody", Hotkey));
     }
 
     // Snoozing
@@ -135,7 +135,7 @@ internal sealed class TrayApp : IDisposable
         if (_snoozer.Snoozes.FirstOrDefault(s => s.Id == id) is not { } snooze)
             return;
         var now = DateTimeOffset.UtcNow;
-        var subtitle = $"Now coming back {Format.When(snooze.DueAt, now).ToLowerInvariantFirst()}";
+        var subtitle = Loc.F("panel.changeSubtitle", Format.When(snooze.DueAt, now).ToLowerInvariantFirst());
         var model = new SnoozePanelModel(now, _settings.TimePrefs, snooze.Window.Title, subtitle, IconCache.For(snooze.App, snooze.Window.Ref));
         ShowPanel(model, AnchorFor(IntPtr.Zero), (panel, due) =>
         {
@@ -239,7 +239,7 @@ internal sealed class TrayApp : IDisposable
                 var target = new WindowTarget(again.Window.Ref, again.Window.Title, again.App, again.Window.Frame);
                 var result = _snoozer.Snooze(target, LocalTime.FloorToMinute(DateTimeOffset.UtcNow).AddHours(1));
                 if (result.Failure is { } failure)
-                    Notifier.Message("Couldn't snooze it again", Copy.Failure(failure));
+                    Notifier.Message(Loc.T("notify.againFailed"), Copy.Failure(failure));
                 else
                     _recentlyReturned.Remove(id);
                 break;
@@ -312,12 +312,12 @@ internal sealed class TrayApp : IDisposable
         [
             new TrayMenuItem(Copy.SnoozeTarget(title), title is null ? null : () => OpenPanel(_windows.LastForeground), Hotkey.ToString()),
             TrayMenuItem.Separator,
-            new TrayMenuItem("Show snoozed windows", () => ShowFlyout(anchor), IsDefault: true),
-            new TrayMenuItem("Bring back all", hasSnoozes ? () => _snoozer.BringBackAll() : null),
+            new TrayMenuItem(Loc.T("tray.showSnoozed"), () => ShowFlyout(anchor), IsDefault: true),
+            new TrayMenuItem(Loc.T("tray.bringBackAll"), hasSnoozes ? () => _snoozer.BringBackAll() : null),
             TrayMenuItem.Separator,
-            new TrayMenuItem("Settings", OpenSettings),
+            new TrayMenuItem(Loc.T("tray.settings"), OpenSettings),
             TrayMenuItem.Separator,
-            new TrayMenuItem("Quit Bring Later", Quit),
+            new TrayMenuItem(Loc.T("tray.quit"), Quit),
         ], anchor);
     }
 
@@ -348,7 +348,7 @@ internal sealed class TrayApp : IDisposable
 
         var model = new SettingsModel(_settings, StartAtSignIn.IsEnabled)
         {
-            UpdateStatus = "Checks GitHub for a newer release when you ask. Nothing is sent automatically.",
+            UpdateStatus = Loc.T("settings.updatesIdle"),
         };
         model.PropertyChanged += (_, e) => OnSettingChanged(model, e);
 
@@ -366,13 +366,13 @@ internal sealed class TrayApp : IDisposable
         window.UpdateCheckRequested += async (_, _) =>
         {
             model.Checking = true;
-            model.UpdateStatus = "Checking…";
+            model.UpdateStatus = Loc.T("settings.updatesChecking");
             var result = await UpdateChecker.CheckAsync().ConfigureAwait(true);
             model.Checking = false;
             model.UpdateUrl = result.Newer is null ? null : result.Url;
-            model.UpdateStatus = result.Failed ? "Couldn't reach GitHub. Try again later."
-                : result.Newer is { } newer ? $"Version {newer.Major}.{newer.Minor}.{newer.Build} is available."
-                : $"You have the latest version.";
+            model.UpdateStatus = result.Failed ? Loc.T("settings.updatesFailed")
+                : result.Newer is { } newer ? Loc.F("settings.updatesAvailable", $"{newer.Major}.{newer.Minor}.{newer.Build}")
+                : Loc.T("settings.updatesCurrent");
         };
         window.Closed += (_, _) => _settingsWindow = null;
         _settingsWindow = window;
@@ -450,7 +450,7 @@ internal sealed class TrayApp : IDisposable
                 Log.Error("Couldn't restore through the snoozer", inner);
                 ShowAllHidden();
             }
-            Notifier.Message("Your windows are back", "Bring Later ran into a problem, so it brought back every snoozed window.");
+            Notifier.Message(Loc.T("notify.recoveredTitle"), Loc.T("notify.recoveredBody"));
             e.Handled = true;
         };
     }

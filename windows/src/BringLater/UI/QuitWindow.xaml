@@ -1,17 +1,18 @@
 <Window x:Class="BringLater.UI.QuitWindow" x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:BringLater"
         Title="Bring Later"
         Width="420"
         Topmost="True"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource AppWindow}">
   <StackPanel Margin="24,20,24,20">
-    <TextBlock Text="Quit Bring Later?" Style="{StaticResource Text.Subtitle}" />
+    <TextBlock Text="{l:T quit.title}" Style="{StaticResource Text.Subtitle}" />
     <TextBlock x:Name="Body" Style="{StaticResource Text.Paragraph}" Margin="0,8,0,20" />
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-      <Button Content="Cancel" Style="{StaticResource Button.Standard}" IsCancel="True" Margin="0,0,8,0" />
-      <Button Content="Quit" Style="{StaticResource Button.Accent}" IsDefault="True" Click="OnQuit" />
+      <Button Content="{l:T quit.cancel}" Style="{StaticResource Button.Standard}" IsCancel="True" Margin="0,0,8,0" />
+      <Button Content="{l:T quit.quit}" Style="{StaticResource Button.Accent}" IsDefault="True" Click="OnQuit" />
     </StackPanel>
   </StackPanel>
 </Window>

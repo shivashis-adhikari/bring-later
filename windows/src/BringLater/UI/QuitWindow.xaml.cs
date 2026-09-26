@@ -8,9 +8,7 @@ internal sealed partial class QuitWindow : Window
     public QuitWindow(int snoozed)
     {
         InitializeComponent();
-        Body.Text = snoozed == 1
-            ? "Your snoozed window will come back now."
-            : $"Your {snoozed} snoozed windows will come back now.";
+        Body.Text = snoozed == 1 ? Loc.T("quit.one") : Loc.F("quit.many", snoozed);
         SourceInitialized += (_, _) => Theme.StyleFrame(this);
     }
 

@@ -37,5 +37,6 @@
     <Resource Include="Assets\BringLater.ico" />
     <EmbeddedResource Include="Assets\tray.ico" LogicalName="tray.ico" />
     <EmbeddedResource Include="Assets\mark-256.png" LogicalName="mark-256.png" />
+    <EmbeddedResource Include="Locales\*.json" LogicalName="locale.%(Filename).json" />
   </ItemGroup>
 </Project>

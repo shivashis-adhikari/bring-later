@@ -258,7 +258,7 @@ internal sealed class SnoozePanelModel : Observable
         var phrase = $"{MonthWords[_pickedDate.Month - 1]} {_pickedDate.Day} {_pickedTime}";
         var parsed = _pickedTime.Trim().Length == 0 ? new TimeParseResult(null, TimeParseError.Unrecognized) : TimeGrammar.Parse(phrase, Now, _zone, _prefs);
         _picked = parsed.Date;
-        PickResult = parsed.Date is { } date ? Format.When(date, Now) : parsed.Error == TimeParseError.Past ? Copy.ParseError(TimeParseError.Past) : "Type a time, like 9am or 14:30";
+        PickResult = parsed.Date is { } date ? Format.When(date, Now) : parsed.Error == TimeParseError.Past ? Copy.ParseError(TimeParseError.Past) : Loc.T("panel.pickHint");
         PickIsError = parsed.Date is null;
         Raise(nameof(CanPick));
     }

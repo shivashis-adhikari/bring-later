@@ -4,8 +4,8 @@ using BringLater.Win32;
 namespace BringLater;
 
 /// <summary>
-/// Every sentence the Windows app shows, in one place. Windows uses sentence case. Keep in step
-/// with docs/copy.md.
+/// The sentences the app shows, looked up in the user's language (see <see cref="Loc"/> and
+/// Locales/*.json). English uses sentence case, as Windows does.
 /// </summary>
 internal static class Copy
 {
@@ -13,51 +13,52 @@ internal static class Copy
 
     public static string Preset(PresetKind kind) => kind switch
     {
-        PresetKind.InOneHour => "In 1 hour",
-        PresetKind.ThisMorning => "This morning",
-        PresetKind.ThisEvening => "This evening",
-        PresetKind.TomorrowMorning => "Tomorrow morning",
-        PresetKind.NextWeek => "Next week",
+        PresetKind.InOneHour => Loc.T("preset.inOneHour"),
+        PresetKind.ThisMorning => Loc.T("preset.thisMorning"),
+        PresetKind.ThisEvening => Loc.T("preset.thisEvening"),
+        PresetKind.TomorrowMorning => Loc.T("preset.tomorrowMorning"),
+        PresetKind.NextWeek => Loc.T("preset.nextWeek"),
         _ => kind.ToString(),
     };
 
-    public const string PickDateAndTime = "Pick a date and time…";
-    public const string InputPlaceholder = "Type a time, like 7pm or tomorrow 9";
+    public static string PickDateAndTime => Loc.T("panel.pick");
+    public static string InputPlaceholder => Loc.T("panel.placeholder");
 
     public static string ParseError(TimeParseError error) => error switch
     {
-        TimeParseError.Past => "That time has already passed",
-        TimeParseError.TooFar => "Pick a time within the next year",
-        _ => "Try 7pm, tomorrow 9, or 2h",
+        TimeParseError.Past => Loc.T("parse.past"),
+        TimeParseError.TooFar => Loc.T("parse.tooFar"),
+        _ => Loc.T("parse.unrecognized"),
     };
 
     public static string Refusal(CaptureRefusal refusal, Shortcut shortcut) => refusal switch
     {
-        CaptureRefusal.Dialog => "This is a dialog. Snooze the window it belongs to instead.",
-        CaptureRefusal.ToolWindow => "This kind of window can't be snoozed.",
-        CaptureRefusal.Elevated => "This app is running as administrator, so Windows won't let Bring Later hide it.",
-        _ => $"Click the window you want to snooze, then press {shortcut}.",
+        CaptureRefusal.Dialog => Loc.T("refusal.dialog"),
+        CaptureRefusal.ToolWindow => Loc.T("refusal.toolWindow"),
+        CaptureRefusal.Elevated => Loc.T("refusal.elevated"),
+        _ => Loc.F("refusal.noWindow", shortcut),
     };
 
     public static string RefusalTitle(CaptureRefusal refusal) =>
-        refusal == CaptureRefusal.NoWindow ? "Nothing to snooze" : "Can't snooze this window";
+        Loc.T(refusal == CaptureRefusal.NoWindow ? "refusal.titleNothing" : "refusal.title");
 
     public static string Failure(SnoozeFailure failure) => failure switch
     {
-        SnoozeFailure.Storage => "The snooze couldn't be saved, so the window was left open. Check that your user folder isn't full.",
-        SnoozeFailure.Gone => "That window has closed.",
-        SnoozeFailure.Elevated => "This app is running as administrator, so Windows won't let Bring Later hide it.",
-        _ => "The app put this window straight back, so it can't be snoozed.",
+        SnoozeFailure.Storage => Loc.T("failure.storage"),
+        SnoozeFailure.Gone => Loc.T("failure.gone"),
+        SnoozeFailure.Elevated => Loc.T("refusal.elevated"),
+        _ => Loc.T("failure.refused"),
     };
 
     public static string Tooltip(int count) => count switch
     {
         0 => AppName,
-        1 => $"{AppName}\n1 snoozed window",
-        _ => $"{AppName}\n{count} snoozed windows",
+        1 => $"{AppName}\n{Loc.T("tray.tooltipOne")}",
+        _ => $"{AppName}\n{Loc.F("tray.tooltipMany", count)}",
     };
 
-    public static string SnoozeTarget(string? title) => title is null ? "Snooze a window…" : $"Snooze “{Trim(title, 40)}”…";
+    public static string SnoozeTarget(string? title) =>
+        title is null ? Loc.T("tray.snoozeAny") : Loc.F("tray.snoozeTarget", Trim(title, 40));
 
     public static string Trim(string text, int max) => text.Length <= max ? text : string.Concat(text.AsSpan(0, max - 1), "…");
 }

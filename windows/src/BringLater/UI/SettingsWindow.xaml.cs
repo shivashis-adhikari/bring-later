@@ -67,12 +67,12 @@ internal sealed partial class SettingsWindow : Window
         var shortcut = Shortcut.FromWpf(Keyboard.Modifiers, key);
         if (shortcut is not { IsValid: true } valid)
         {
-            _model.ShortcutMessage = "Use Ctrl, Alt or Win together with another key.";
+            _model.ShortcutMessage = Loc.T("settings.shortcutInvalid");
             return;
         }
         if (ApplyShortcut?.Invoke(valid) != true)
         {
-            _model.ShortcutMessage = $"Another app is already using {valid}. Try a different one.";
+            _model.ShortcutMessage = Loc.F("settings.shortcutTaken", valid);
             return;
         }
         _model.ShortcutMessage = "";

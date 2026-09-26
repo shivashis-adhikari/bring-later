@@ -39,21 +39,21 @@ internal sealed class Notifier
                 .AddArgument("action", nameof(NotificationAction.Show))
                 .AddArgument("id", snooze.Id.ToString())
                 .AddText(snooze.Window.Title, hintMaxLines: 1)
-                .AddText($"{snooze.App.Name} · snoozed {SnoozedAt(snooze, now)}")
-                .AddButton(new ToastButton().SetContent("Show")
+                .AddText(Loc.F("notify.snoozedAt", snooze.App.Name, SnoozedAt(snooze, now)))
+                .AddButton(new ToastButton().SetContent(Loc.T("notify.show"))
                     .AddArgument("action", nameof(NotificationAction.Show)).AddArgument("id", snooze.Id.ToString()))
-                .AddButton(new ToastButton().SetContent("Snooze 1 hour")
+                .AddButton(new ToastButton().SetContent(Loc.T("notify.snoozeHour"))
                     .AddArgument("action", nameof(NotificationAction.SnoozeAgain)).AddArgument("id", snooze.Id.ToString())));
         }
         else if (report.Returned.Count > 1)
         {
             var titles = report.Returned.Select(s => Copy.Trim(s.Window.Title, 40)).ToList();
             var body = titles.Count == 2
-                ? $"{titles[0]} and {titles[1]}"
-                : $"{titles[0]}, {titles[1]} and {titles.Count - 2} more";
+                ? Loc.F("notify.two", titles[0], titles[1])
+                : Loc.F("notify.more", titles[0], titles[1], titles.Count - 2);
             Show(builder => builder
                 .AddArgument("action", nameof(NotificationAction.Show))
-                .AddText($"{report.Returned.Count} windows are back")
+                .AddText(Loc.F("notify.manyBack", report.Returned.Count))
                 .AddText(body));
         }
 
@@ -62,7 +62,7 @@ internal sealed class Notifier
             Show(builder => builder
                 .AddArgument("action", "none")
                 .AddText(snooze.Window.Title, hintMaxLines: 1)
-                .AddText($"The {snooze.App.Name} window was closed while it was snoozed."));
+                .AddText(Loc.F("notify.closed", snooze.App.Name)));
         }
     }
 
@@ -74,10 +74,11 @@ internal sealed class Notifier
                 builder.AddButton(new ToastButton().SetContent(settingsButton).AddArgument("action", nameof(NotificationAction.OpenSettings)));
         });
 
+    /// <summary>When it was snoozed: just the time if that was today, otherwise the short date and time.</summary>
     private static string SnoozedAt(Snooze snooze, DateTimeOffset now) =>
-        (TimeZoneInfo.ConvertTime(snooze.CreatedAt, TimeZoneInfo.Local).Date == TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Local).Date)
-            ? $"at {Format.Time(snooze.CreatedAt)}"
-            : Format.When(snooze.CreatedAt, now).Replace(" at ", ", ", StringComparison.Ordinal);
+        TimeZoneInfo.ConvertTime(snooze.CreatedAt, TimeZoneInfo.Local).Date == TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Local).Date
+            ? Format.Time(snooze.CreatedAt)
+            : Format.DateAndTime(snooze.CreatedAt);
 
     private static void Show(Action<ToastContentBuilder> build)
     {
