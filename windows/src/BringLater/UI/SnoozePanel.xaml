@@ -87,7 +87,8 @@
         </Grid>
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
           <TextBlock Text="{Binding Title}" Style="{StaticResource Text.Strong}" />
-          <TextBlock Text="{Binding Subtitle}" Style="{StaticResource Text.Caption}" Margin="0,1,0,0" />
+          <TextBlock Text="{Binding Subtitle}" Style="{StaticResource Text.Caption}" Margin="0,1,0,0"
+                     Visibility="{Binding HasSubtitle, Converter={StaticResource Visible}}" />
         </StackPanel>
       </Grid>
 
@@ -156,9 +157,9 @@
                   <ColumnDefinition Width="Auto" />
                   <ColumnDefinition Width="56" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Label}" Style="{StaticResource Text}" />
-                <TextBlock Grid.Column="1" Text="{Binding Time}" Style="{StaticResource Text.Secondary}" Margin="12,0,0,0" />
-                <TextBlock Grid.Column="2" Text="{Binding Shortcut}" Style="{StaticResource Text.Tertiary}" HorizontalAlignment="Right" />
+                <TextBlock Text="{Binding Label}" Style="{StaticResource Text}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding Time}" Style="{StaticResource Text.Secondary}" Margin="12,0,0,0" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="2" Text="{Binding Shortcut}" Style="{StaticResource Text.Tertiary}" HorizontalAlignment="Right" VerticalAlignment="Center" />
               </Grid>
             </Button>
           </DataTemplate>

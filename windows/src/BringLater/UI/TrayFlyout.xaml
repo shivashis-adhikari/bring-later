@@ -67,9 +67,9 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Button Style="{StaticResource Button.Subtle}" HorizontalAlignment="Left" HorizontalContentAlignment="Left"
-                IsEnabled="{Binding CanSnooze}" Click="OnSnooze">
-          <TextBlock Text="{Binding SnoozeLabel}" Style="{StaticResource Text}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" MaxWidth="220" />
+        <Button Style="{StaticResource Button.Subtle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                IsEnabled="{Binding CanSnooze}" Click="OnSnooze" Margin="0,0,4,0">
+          <TextBlock Text="{Binding SnoozeLabel}" Style="{StaticResource Text}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
         </Button>
         <Button Grid.Column="1" Content="Bring back all" Style="{StaticResource Button.Link}" Click="OnBringBackAll"
                 Visibility="{Binding CanBringBackAll, Converter={StaticResource Visible}}" />

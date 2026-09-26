@@ -90,6 +90,7 @@ internal sealed class SnoozePanelModel : Observable
     public DateTimeOffset Now { get; }
     public string Title { get; }
     public string Subtitle { get; }
+    public bool HasSubtitle => Subtitle.Length > 0;
     public ImageSource? Icon { get; }
     public bool HasIcon => Icon is not null;
     public string Placeholder => Copy.InputPlaceholder;

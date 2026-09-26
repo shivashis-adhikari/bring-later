@@ -3,7 +3,11 @@ using BringLater.Win32;
 
 namespace BringLater.UI;
 
-internal sealed record TimeOption(ClockTime Time, string Label);
+internal sealed record TimeOption(ClockTime Time, string Label)
+{
+    /// <summary>The closed ComboBox shows the item itself, so it has to read as the label.</summary>
+    public override string ToString() => Label;
+}
 
 internal sealed class SettingsModel : Observable
 {

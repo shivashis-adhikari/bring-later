@@ -9,24 +9,21 @@
     <Image Source="{StaticResource LogoMark}" Width="52" Height="52" HorizontalAlignment="Left" />
     <TextBlock Text="Bring Later is running" Style="{StaticResource Text.Subtitle}" Margin="0,18,0,10" />
 
-    <WrapPanel>
-      <TextBlock Text="Press" Style="{StaticResource Text.Secondary}" VerticalAlignment="Center" Margin="0,0,8,0" />
-      <ItemsControl x:Name="Keys" Focusable="False" VerticalAlignment="Center">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <StackPanel Orientation="Horizontal" />
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Border Style="{StaticResource Keycap}">
-              <TextBlock Text="{Binding}" Style="{StaticResource KeycapText}" />
-            </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
-      <TextBlock Text="on any window, pick a time, and it's gone until then." Style="{StaticResource Text.Secondary}" VerticalAlignment="Center" Margin="4,0,0,0" TextTrimming="None" />
-    </WrapPanel>
+    <TextBlock Style="{StaticResource Text.Paragraph}" Text="Press this shortcut on any window and pick a time. The window is gone until then, and comes back where it was." />
+    <ItemsControl x:Name="Keys" Focusable="False" HorizontalAlignment="Left" Margin="0,12,0,0">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Border Style="{StaticResource Keycap}">
+            <TextBlock Text="{Binding}" Style="{StaticResource KeycapText}" />
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
 
     <TextBlock Style="{StaticResource Text.Paragraph}" Margin="0,14,0,0"
                Text="Everything you've snoozed is in the notification area. If you don't see the icon, select Show hidden icons on the taskbar." />

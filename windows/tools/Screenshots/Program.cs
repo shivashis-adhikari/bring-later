@@ -84,26 +84,16 @@ internal static class Program
         var model = new TrayFlyoutModel(Shortcut.Default.ToString()) { SnoozeTarget = "Quarterly budget.xlsx – Excel" };
         if (!empty)
         {
-            model.Update(
-            [
-                Sample("Flights to Kathmandu – Google Flights", "Google Chrome", Now.AddHours(3.77)),
-                Sample("Re: Visa appointment", "Outlook", Now.AddHours(17.77)),
-                Sample("Draft – Launch notes.docx", "Word", Now.AddDays(5).AddHours(-6.23)),
-            ], Now);
+            // The same rows Update() builds, with stand-in icons since these apps aren't running here.
+            Row("Flights to Kathmandu – Google Flights", "Google Chrome", Now.AddHours(3.77), Color.FromRgb(0x1A, 0x61, 0xF4), "\uE774");
+            Row("Re: Visa appointment", "Outlook", Now.AddHours(17.77), Color.FromRgb(0x0F, 0x6C, 0xBD), "\uE715");
+            Row("Draft – Launch notes.docx", "Word", Now.AddDays(5).AddHours(-6.23), Color.FromRgb(0x2B, 0x57, 0x9A), "\uE8A5");
         }
         return model;
-    }
 
-    private static Snooze Sample(string title, string app, DateTimeOffset due) => new()
-    {
-        Id = Guid.NewGuid(),
-        CreatedAt = Now,
-        DueAt = due,
-        State = SnoozeState.Hidden,
-        Method = HideMethod.Hide,
-        App = new SnoozeApp("", app, 0, null),
-        Window = new SnoozeWindow("hwnd:0", title, null),
-    };
+        void Row(string title, string app, DateTimeOffset due, Color color, string glyph) =>
+            model.Rows.Add(new SnoozeRow(Guid.NewGuid(), title, $"{app} · {Format.When(due, Now)}", AppIcon(color, glyph), false));
+    }
 
     /// <summary>A popup window's content, detached so it can be laid out and drawn without showing it.</summary>
     private static Border Content(Window window)
@@ -134,7 +124,8 @@ internal static class Program
         });
         var caption = new TextBlock
         {
-            Text = "            ",
+            // These windows can't be resized, so Windows shows only the close button.
+            Text = "\uE8BB",
             Margin = new Thickness(0, 0, 18, 0),
             VerticalAlignment = VerticalAlignment.Center,
             FontFamily = new FontFamily("Segoe Fluent Icons, Segoe MDL2 Assets"),

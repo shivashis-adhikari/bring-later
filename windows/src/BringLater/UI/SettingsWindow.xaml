@@ -105,8 +105,8 @@
         <StackPanel>
           <TextBlock Text="When a window comes back" Style="{StaticResource CardTitle}" />
           <TextBlock Text="A notification tells you either way." Style="{StaticResource CardText}" Margin="0,2,0,8" />
-          <RadioButton Content="Show it without switching to it" Style="{StaticResource Radio}" GroupName="Return" IsChecked="{Binding ShowQuietly}" />
-          <RadioButton Content="Bring it to the front" Style="{StaticResource Radio}" GroupName="Return" IsChecked="{Binding BringToFront}" />
+          <RadioButton Content="Show it without switching to it" Style="{StaticResource Radio}" IsChecked="{Binding ShowQuietly}" />
+          <RadioButton Content="Bring it to the front" Style="{StaticResource Radio}" IsChecked="{Binding BringToFront}" />
         </StackPanel>
       </Border>
 
