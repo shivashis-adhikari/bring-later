@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Bring Later"
         Width="500"
+        WindowStartupLocation="CenterScreen"
         Style="{StaticResource AppWindow}">
   <StackPanel Margin="32,28,32,24">
     <Image Source="{StaticResource LogoMark}" Width="52" Height="52" HorizontalAlignment="Left" />

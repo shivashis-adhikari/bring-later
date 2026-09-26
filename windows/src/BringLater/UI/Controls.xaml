@@ -130,7 +130,6 @@
     <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
     <Setter Property="ResizeMode" Value="NoResize" />
     <Setter Property="SizeToContent" Value="Height" />
-    <Setter Property="WindowStartupLocation" Value="CenterScreen" />
   </Style>
 
   <Style x:Key="PopupWindow" TargetType="Window">

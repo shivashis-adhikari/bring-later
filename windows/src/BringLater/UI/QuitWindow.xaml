@@ -4,6 +4,7 @@
         Title="Bring Later"
         Width="420"
         Topmost="True"
+        WindowStartupLocation="CenterScreen"
         Style="{StaticResource AppWindow}">
   <StackPanel Margin="24,20,24,20">
     <TextBlock Text="Quit Bring Later?" Style="{StaticResource Text.Subtitle}" />

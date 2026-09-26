@@ -1,0 +1,39 @@
+name: Bug report
+description: Something didn't work the way it should
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: Which app's window
+      description: For example "Google Chrome 131" or "Outlook (new)". Many problems depend on the app.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS 26 or later
+        - macOS 14 or 15
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Bring Later version
+      description: Shown in Settings.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: "Windows: Settings > Open log folder. macOS: run `log show --last 1h --predicate 'subsystem == \"io.github.shivashis-adhikari.BringLater\"'` in Terminal. The log never contains window titles."
+      render: text
