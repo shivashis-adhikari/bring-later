@@ -8,6 +8,10 @@
 <p align="center"><strong>Snooze a window until you actually need it.</strong></p>
 
 <p align="center">
+  English · <a href="README.zh-CN.md">简体中文</a> · <a href="README.es.md">Español</a> · <a href="README.hi.md">हिन्दी</a>
+</p>
+
+<p align="center">
   <a href="https://github.com/shivashis-adhikari/bring-later/releases/latest">Download</a> ·
   <a href="https://shivashis-adhikari.github.io/bring-later/">Website</a> ·
   <a href="#typing-a-time">Typing a time</a> ·
@@ -28,6 +32,7 @@ Press a shortcut on the window and pick a time. The window disappears. At that t
 - **Windows 11** and **macOS 14 or later**, each built natively for its platform
 - Free and open source under the MIT License
 - No account, no analytics, no network requests unless you check for updates
+- In English, Simplified Chinese, Spanish and Hindi, following your system language
 
 ## How it works
 
