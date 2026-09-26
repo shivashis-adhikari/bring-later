@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Version>0.1.0</Version>
+    <Authors>Shivashis Adhikari</Authors>
+    <Product>Bring Later</Product>
+    <Copyright>Copyright (c) 2026 Shivashis Adhikari</Copyright>
+  </PropertyGroup>
+</Project>

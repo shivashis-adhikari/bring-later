@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BringLater.Core/BringLater.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BringLater.Core.Tests/BringLater.Core.Tests.csproj" />
+  </Folder>
+</Solution>

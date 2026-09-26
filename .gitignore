@@ -1,0 +1,15 @@
+.DS_Store
+
+# Swift
+mac/.build/
+mac/.swiftpm/
+mac/build/
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Build output
+/out/

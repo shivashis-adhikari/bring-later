@@ -1,0 +1,47 @@
+{
+  "about": "Snooze panel presets, in display order. A preset whose time equals an earlier one is left out.",
+  "defaults": { "zone": "Asia/Kathmandu", "morning": "09:00", "evening": "19:00" },
+  "cases": [
+    { "name": "weekday afternoon", "now": "2026-09-23T15:14:37", "expect": [
+      { "kind": "inOneHour", "at": "2026-09-23T16:14" },
+      { "kind": "thisEvening", "at": "2026-09-23T19:00" },
+      { "kind": "tomorrowMorning", "at": "2026-09-24T09:00" },
+      { "kind": "nextWeek", "at": "2026-09-28T09:00" } ] },
+    { "name": "after the evening time", "now": "2026-09-23T19:30:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-09-23T20:30" },
+      { "kind": "tomorrowMorning", "at": "2026-09-24T09:00" },
+      { "kind": "nextWeek", "at": "2026-09-28T09:00" } ] },
+    { "name": "small hours count as the same day", "now": "2026-09-24T01:10:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-09-24T02:10" },
+      { "kind": "thisMorning", "at": "2026-09-24T09:00" },
+      { "kind": "thisEvening", "at": "2026-09-24T19:00" },
+      { "kind": "nextWeek", "at": "2026-09-28T09:00" } ] },
+    { "name": "monday means a week out", "now": "2026-09-28T10:00:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-09-28T11:00" },
+      { "kind": "thisEvening", "at": "2026-09-28T19:00" },
+      { "kind": "tomorrowMorning", "at": "2026-09-29T09:00" },
+      { "kind": "nextWeek", "at": "2026-10-05T09:00" } ] },
+    { "name": "sunday night drops the duplicate monday", "now": "2026-09-27T23:30:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-09-28T00:30" },
+      { "kind": "tomorrowMorning", "at": "2026-09-28T09:00" } ] },
+    { "name": "an hour from now equals the evening time", "now": "2026-09-23T18:00:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-09-23T19:00" },
+      { "kind": "tomorrowMorning", "at": "2026-09-24T09:00" },
+      { "kind": "nextWeek", "at": "2026-09-28T09:00" } ] },
+    { "name": "custom times", "now": "2026-09-23T12:00:00", "morning": "08:30", "evening": "18:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-09-23T13:00" },
+      { "kind": "thisEvening", "at": "2026-09-23T18:00" },
+      { "kind": "tomorrowMorning", "at": "2026-09-24T08:30" },
+      { "kind": "nextWeek", "at": "2026-09-28T08:30" } ] },
+    { "name": "spring forward", "zone": "America/New_York", "now": "2026-03-08T01:30:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-03-08T03:30-04:00" },
+      { "kind": "thisMorning", "at": "2026-03-08T09:00-04:00" },
+      { "kind": "thisEvening", "at": "2026-03-08T19:00-04:00" },
+      { "kind": "nextWeek", "at": "2026-03-09T09:00-04:00" } ] },
+    { "name": "fall back", "zone": "Europe/London", "now": "2026-10-25T00:30:00", "expect": [
+      { "kind": "inOneHour", "at": "2026-10-25T01:30+01:00" },
+      { "kind": "thisMorning", "at": "2026-10-25T09:00+00:00" },
+      { "kind": "thisEvening", "at": "2026-10-25T19:00+00:00" },
+      { "kind": "nextWeek", "at": "2026-10-26T09:00+00:00" } ] }
+  ]
+}

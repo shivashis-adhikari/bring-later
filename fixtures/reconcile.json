@@ -1,0 +1,22 @@
+{
+  "about": "What to do with each stored snooze, given the window's live state. Runs at launch and on every tick. `live` is hidden, visible or gone.",
+  "now": "2026-09-23T15:00:00Z",
+  "cases": [
+    { "name": "overdue and still hidden", "state": "hidden", "due": "2026-09-23T14:00:00Z", "live": "hidden", "expect": "restore" },
+    { "name": "due exactly now", "state": "hidden", "due": "2026-09-23T15:00:00Z", "live": "hidden", "expect": "restore" },
+    { "name": "not due yet", "state": "hidden", "due": "2026-09-23T16:00:00Z", "live": "hidden", "expect": "keep" },
+    { "name": "user brought it back early", "state": "hidden", "due": "2026-09-23T16:00:00Z", "live": "visible", "expect": "drop" },
+    { "name": "user brought it back, now overdue", "state": "hidden", "due": "2026-09-23T14:00:00Z", "live": "visible", "expect": "drop" },
+    { "name": "closed before due", "state": "hidden", "due": "2026-09-23T16:00:00Z", "live": "gone", "expect": "markClosed" },
+    { "name": "closed and overdue", "state": "hidden", "due": "2026-09-23T14:00:00Z", "live": "gone", "expect": "notifyClosed" },
+    { "name": "already closed, not due", "state": "closed", "due": "2026-09-23T16:00:00Z", "live": "gone", "expect": "keep" },
+    { "name": "already closed, due", "state": "closed", "due": "2026-09-23T14:00:00Z", "live": "gone", "expect": "notifyClosed" },
+    { "name": "closed records ignore live state", "state": "closed", "due": "2026-09-23T16:00:00Z", "live": "hidden", "expect": "keep" }
+  ],
+  "nextCheck": [
+    { "name": "nothing stored", "dues": [], "expect": null },
+    { "name": "capped at a minute", "dues": ["2026-09-23T16:00:00Z"], "expect": "2026-09-23T15:01:00Z" },
+    { "name": "soonest due wins", "dues": ["2026-09-23T16:00:00Z", "2026-09-23T15:00:30Z"], "expect": "2026-09-23T15:00:30Z" },
+    { "name": "overdue means now", "dues": ["2026-09-23T14:00:00Z"], "expect": "2026-09-23T15:00:00Z" }
+  ]
+}
