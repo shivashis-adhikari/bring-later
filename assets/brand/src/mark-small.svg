@@ -1,0 +1,18 @@
+<svg width="266" height="274" viewBox="27 25 266 274" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M233 25C255.091 25 273 42.9086 273 65V142.106C256.989 131.217 237.653 124.852 216.83 124.852C161.602 124.852 116.83 169.623 116.83 224.852C116.83 241.498 120.899 257.193 128.094 271H67C44.9086 271 27 253.091 27 231V65C27 42.9086 44.9086 25 67 25H233Z" fill="url(#window)"/>
+  <circle cx="63.5" cy="62.5" r="12" fill="white"/>
+  <circle cx="99.5" cy="62.5" r="12" fill="#E2F2FE"/>
+  <circle cx="135.5" cy="62.5" r="12" fill="#B2D5FE"/>
+  <circle cx="217.5" cy="223.5" r="75.5" fill="url(#clock)"/>
+  <path d="M218 184V230L243 249.5" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="window" x1="27" y1="148" x2="273" y2="148" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1C88FC"/>
+      <stop offset="1" stop-color="#2148EA"/>
+    </linearGradient>
+    <linearGradient id="clock" x1="209" y1="140" x2="236" y2="325" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A61F4"/>
+      <stop offset="1" stop-color="#5071EF"/>
+    </linearGradient>
+  </defs>
+</svg>

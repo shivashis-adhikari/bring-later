@@ -1,0 +1,18 @@
+<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask id="notch">
+      <rect width="36" height="36" fill="white"/>
+      <circle cx="25.5" cy="25.5" r="10.6" fill="black"/>
+    </mask>
+    <mask id="hands">
+      <rect width="36" height="36" fill="white"/>
+      <path d="M25.5 20.6V25.8L28.6 28.2" stroke="black" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </mask>
+  </defs>
+  <g mask="url(#notch)">
+    <rect x="3.3" y="4.3" width="23.4" height="22.4" rx="5" fill="none" stroke="black" stroke-width="2.6"/>
+    <circle cx="8.6" cy="9.8" r="1.5" fill="black"/>
+    <circle cx="12.9" cy="9.8" r="1.5" fill="black"/>
+  </g>
+  <circle cx="25.5" cy="25.5" r="8.3" fill="black" mask="url(#hands)"/>
+</svg>
