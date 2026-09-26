@@ -64,22 +64,20 @@ private struct AccessView: View {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 64, height: 64)
-            Text(afterUpdate ? "Turn Accessibility Access Back On" : "Allow Accessibility Access")
+            Text(afterUpdate ? L("access.titleAgain") : L("access.title"))
                 .font(.title2.weight(.semibold))
-            Text(afterUpdate
-                 ? "macOS turns off Accessibility access when Bring Later is updated. Turn it on again to keep snoozing windows."
-                 : "Bring Later uses Accessibility access to hide and restore other apps' windows. It reads window titles so you can tell them apart, and nothing else.")
+            Text(afterUpdate ? L("access.bodyAgain") : L("access.body"))
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("In System Settings, turn on Bring Later under Privacy & Security › Accessibility. If it's already on, remove it with the minus button and add it again.")
+            Text(L("access.steps"))
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             HStack {
                 ProgressView().controlSize(.small)
-                Text("Waiting for access…").font(.callout).foregroundStyle(.secondary)
+                Text(L("access.waiting")).font(.callout).foregroundStyle(.secondary)
                 Spacer()
-                Button("Open System Settings") { Access.openSettings() }
+                Button(L("settings.openSystemSettings")) { Access.openSettings() }
                     .keyboardShortcut(.defaultAction)
             }
             .padding(.top, 4)

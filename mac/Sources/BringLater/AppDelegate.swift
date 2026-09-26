@@ -84,7 +84,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // windows the user already brought back are forgotten.
         tick()
         if !hotkey.register(Preferences.shortcut) {
-            notifier.message("Shortcut Unavailable", "Another app is using \(Preferences.shortcut.display). Choose a different shortcut in Settings.")
+            notifier.message(L("notify.shortcutTakenTitle"), L("notify.shortcutTakenBody", Preferences.shortcut.display))
         }
         notifier.requestPermission()
     }
@@ -128,7 +128,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func changeTime(_ id: UUID) {
         guard let snooze = snoozer.snoozes.first(where: { $0.id == id }) else { return }
         let now = Date()
-        let subtitle = "Now coming back \(Format.when(snooze.dueAt, now: now).lowercasedFirst)"
+        let subtitle = L("panel.changeSubtitle", Format.when(snooze.dueAt, now: now).lowercasedFirst)
         let icon = NSRunningApplication(processIdentifier: snooze.app.pid)?.icon
         let model = PanelModel(now: now, prefs: Preferences.timePrefs, title: snooze.window.title, subtitle: subtitle, icon: icon)
         var panel: SnoozePanel!
@@ -214,7 +214,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let target = WindowTarget(ref: snooze.window.ref, title: snooze.window.title, app: snooze.app, frame: snooze.window.frame)
         let due = LocalTime.floorToMinute(Date()).addingTimeInterval(3600)
         if case .failure(let failure) = snoozer.snooze(target, until: due) {
-            notifier.message("Couldn't Snooze It Again", Copy.failure(failure))
+            notifier.message(L("notify.againFailed"), Copy.failure(failure))
         } else {
             recentlyReturned[snooze.id] = nil
         }
@@ -242,7 +242,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func updateStatusItem() {
         let count = snoozer.snoozes.count
-        statusItem?.button?.toolTip = count == 0 ? Copy.appName : "\(Copy.appName) – \(count) snoozed"
+        statusItem?.button?.toolTip = count == 0 ? Copy.appName : L("menu.tooltip", String(count))
     }
 
     func menuNeedsUpdate(_ menu: NSMenu) {
@@ -267,37 +267,37 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let now = Date()
         let snoozes = snoozer.snoozes.sorted { $0.dueAt < $1.dueAt }
         if snoozes.isEmpty {
-            let empty = NSMenuItem(title: "No Snoozed Windows", action: nil, keyEquivalent: "")
+            let empty = NSMenuItem(title: L("menu.empty"), action: nil, keyEquivalent: "")
             empty.isEnabled = false
             menu.addItem(empty)
         } else {
-            menu.addItem(NSMenuItem.sectionHeader(title: "Snoozed"))
+            menu.addItem(NSMenuItem.sectionHeader(title: L("menu.snoozed")))
             for snooze in snoozes {
                 let row = NSMenuItem(title: Copy.trim(snooze.window.title, 48), action: nil, keyEquivalent: "")
                 let when = Format.when(snooze.dueAt, now: now)
                 if #available(macOS 14.4, *) {
-                    row.subtitle = snooze.state == .closed ? "Window closed · reminder \(when.lowercasedFirst)" : "\(snooze.app.name) · \(when)"
+                    row.subtitle = snooze.state == .closed ? L("menu.closed", when.lowercasedFirst) : "\(snooze.app.name) · \(when)"
                 }
                 row.image = icon(for: snooze)
                 let submenu = NSMenu()
                 if snooze.state == .hidden {
-                    submenu.addItem(item("Bring Back Now", #selector(bringBackFromMenu(_:)), snooze.id))
+                    submenu.addItem(item(L("menu.bringBack"), #selector(bringBackFromMenu(_:)), snooze.id))
                 }
-                submenu.addItem(item("Change Time…", #selector(changeTimeFromMenu(_:)), snooze.id))
+                submenu.addItem(item(L("menu.changeTime"), #selector(changeTimeFromMenu(_:)), snooze.id))
                 row.submenu = submenu
                 menu.addItem(row)
             }
             menu.addItem(.separator())
-            menu.addItem(item("Bring Back All", #selector(bringBackAllFromMenu), nil))
+            menu.addItem(item(L("menu.bringBackAll"), #selector(bringBackAllFromMenu), nil))
         }
 
         menu.addItem(.separator())
-        let settings = item("Settings…", #selector(openSettings), nil)
+        let settings = item(L("menu.settings"), #selector(openSettings), nil)
         settings.keyEquivalent = ","
         menu.addItem(settings)
-        menu.addItem(item("Check for Updates…", #selector(checkForUpdatesFromMenu), nil))
+        menu.addItem(item(L("menu.checkUpdates"), #selector(checkForUpdatesFromMenu), nil))
         menu.addItem(.separator())
-        let quit = NSMenuItem(title: "Quit Bring Later", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        let quit = NSMenuItem(title: L("menu.quit"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         menu.addItem(quit)
     }
 
@@ -357,7 +357,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         settingsModel = model
 
         let window = NSWindow(contentRect: .zero, styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        window.title = "Bring Later Settings"
+        window.title = L("settings.windowTitle")
         window.isReleasedWhenClosed = false
         window.contentViewController = NSHostingController(rootView: SettingsView(model: model))
         window.center()

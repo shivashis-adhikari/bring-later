@@ -56,6 +56,8 @@ internal static class Program
         {
             CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo(culture);
             Loc.Use(language);
+            // Styles read their text when they load, so reload them in the new language.
+            app.Resources.MergedDictionaries[1] = new ResourceDictionary { Source = new Uri("pack://application:,,,/BringLater;component/UI/Controls.xaml") };
             Save(PanelWindow(model => model.Selected = 1), output, $"panel-dark.{language}");
             Save(PanelWindow(model => model.Query = "fri 2pm"), output, $"panel-typed-dark.{language}");
             Save(PanelWindow(model => { model.IsPicking = true; model.Pick(Today.AddDays(10)); }), output, $"panel-picker-dark.{language}");

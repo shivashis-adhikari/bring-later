@@ -4,6 +4,13 @@
 <dict>
   <key>CFBundleDevelopmentRegion</key>
   <string>en</string>
+  <key>CFBundleLocalizations</key>
+  <array>
+    <string>en</string>
+    <string>zh-Hans</string>
+    <string>es</string>
+    <string>hi</string>
+  </array>
   <key>CFBundleDisplayName</key>
   <string>Bring Later</string>
   <key>CFBundleExecutable</key>

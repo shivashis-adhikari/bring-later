@@ -22,8 +22,8 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             UNNotificationCategory(
                 identifier: Self.returnedCategory,
                 actions: [
-                    UNNotificationAction(identifier: NotificationAction.show.rawValue, title: "Show", options: [.foreground]),
-                    UNNotificationAction(identifier: NotificationAction.snoozeAgain.rawValue, title: "Snooze 1 Hour"),
+                    UNNotificationAction(identifier: NotificationAction.show.rawValue, title: L("notify.show"), options: [.foreground]),
+                    UNNotificationAction(identifier: NotificationAction.snoozeAgain.rawValue, title: L("notify.snoozeHour")),
                 ],
                 intentIdentifiers: []
             ),
@@ -31,21 +31,23 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     }
 
     func requestPermission() {
-        center.requestAuthorization(options: [.alert, .sound]) { _, error in
+        // macOS calls back on a background queue. @Sendable keeps the closure off the main actor,
+        // which Swift 6 would otherwise enforce with a crash; it only logs.
+        center.requestAuthorization(options: [.alert, .sound]) { @Sendable _, error in
             if let error { Logger.app.error("Notification permission: \(error.localizedDescription, privacy: .public)") }
         }
     }
 
     func report(_ report: ReturnReport, now: Date) {
         if report.returned.count == 1, let snooze = report.returned.first {
-            post(title: snooze.window.title, body: "\(snooze.app.name) · snoozed \(snoozedAt(snooze, now: now))", category: Self.returnedCategory, id: snooze.id)
+            post(title: snooze.window.title, body: L("notify.snoozedAt", snooze.app.name, snoozedAt(snooze, now: now)), category: Self.returnedCategory, id: snooze.id)
         } else if report.returned.count > 1 {
             let titles = report.returned.map { Copy.trim($0.window.title, 40) }
-            let body = titles.count == 2 ? "\(titles[0]) and \(titles[1])" : "\(titles[0]), \(titles[1]) and \(titles.count - 2) more"
-            post(title: "\(report.returned.count) windows are back", body: body, category: nil, id: nil)
+            let body = titles.count == 2 ? L("notify.two", titles[0], titles[1]) : L("notify.more", titles[0], titles[1], String(titles.count - 2))
+            post(title: L("notify.manyBack", String(report.returned.count)), body: body, category: nil, id: nil)
         }
         for snooze in report.closedReminders {
-            post(title: snooze.window.title, body: "The \(snooze.app.name) window was closed while it was snoozed.", category: nil, id: nil)
+            post(title: snooze.window.title, body: L("notify.closed", snooze.app.name), category: nil, id: nil)
         }
     }
 
@@ -55,8 +57,8 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
 
     private func snoozedAt(_ snooze: Snooze, now: Date) -> String {
         Calendar.current.isDate(snooze.createdAt, inSameDayAs: now)
-            ? "at \(Format.time(snooze.createdAt))"
-            : Format.when(snooze.createdAt, now: now).replacingOccurrences(of: " at ", with: ", ")
+            ? Format.time(snooze.createdAt)
+            : Format.dateAndTime(snooze.createdAt)
     }
 
     private func post(title: String, body: String, category: String?, id: UUID?) {

@@ -186,7 +186,7 @@ private struct PanelView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 HStack {
                     Spacer()
-                    Button("Close", action: cancel).keyboardShortcut(.defaultAction)
+                    Button(L("panel.close"), action: cancel).keyboardShortcut(.defaultAction)
                 }
                 .padding(.top, 14)
             } else if model.isPicking {
@@ -245,7 +245,7 @@ private struct PanelView: View {
                 choose(model.rows[digit - 1])
                 return .handled
             }
-            .accessibilityLabel("Time to bring the window back")
+            .accessibilityLabel(L("panel.inputName"))
     }
 
     private var resultRow: some View {
@@ -288,18 +288,18 @@ private struct PanelView: View {
             HStack {
                 Button { model.isPicking = false; inputFocused = true } label: { Image(systemName: "chevron.left") }
                     .buttonStyle(.borderless)
-                    .accessibilityLabel("Back")
-                Text("Pick a Date & Time").font(.headline)
+                    .accessibilityLabel(L("panel.back"))
+                Text(L("panel.pickTitle")).font(.headline)
             }
-            DatePicker("Date", selection: $model.pickedDate, in: model.pickRange, displayedComponents: .date)
+            DatePicker(L("panel.date"), selection: $model.pickedDate, in: model.pickRange, displayedComponents: .date)
                 .datePickerStyle(.graphical)
                 .labelsHidden()
             HStack {
-                DatePicker("Time", selection: $model.pickedDate, displayedComponents: .hourAndMinute)
+                DatePicker(L("panel.time"), selection: $model.pickedDate, displayedComponents: .hourAndMinute)
                     .datePickerStyle(.stepperField)
                     .labelsHidden()
                 Spacer()
-                Button("Snooze", action: commit)
+                Button(L("panel.snooze"), action: commit)
                     .keyboardShortcut(.defaultAction)
                     .disabled(!model.pickIsValid)
             }

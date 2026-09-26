@@ -4,7 +4,7 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-version="${VERSION:-0.1.0}"
+version="${VERSION:-0.2.0}"
 brand="../assets/brand/generated"
 app="build/Bring Later.app"
 
@@ -15,6 +15,7 @@ rm -rf build
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp "$binary" "$app/Contents/MacOS/BringLater"
 cp "$brand/AppIcon.icns" "$brand/MenuBarTemplate.png" "$brand/MenuBarTemplate@2x.png" "$app/Contents/Resources/"
+cp -R Localization/*.lproj "$app/Contents/Resources/"
 sed "s/__VERSION__/$version/g" Info.plist > "$app/Contents/Info.plist"
 
 # Ad-hoc signature: Apple silicon won't run unsigned code, and this needs no certificate.

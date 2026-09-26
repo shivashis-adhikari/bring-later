@@ -14,7 +14,7 @@ final class SettingsModel {
     var bringToFront = Preferences.bringToFront { didSet { Preferences.bringToFront = bringToFront } }
     var launchAtLogin = SMAppService.mainApp.status == .enabled
     var accessGranted = AXIsProcessTrusted()
-    var updateStatus = "Checks GitHub for a newer release when you ask. Nothing is sent automatically."
+    var updateStatus = L("settings.updatesIdle")
     var updateURL: URL?
     var checking = false
 
@@ -39,16 +39,16 @@ final class SettingsModel {
 
     func checkForUpdates() async {
         checking = true
-        updateStatus = "Checking…"
+        updateStatus = L("settings.updatesChecking")
         switch await Updates.check() {
         case .upToDate:
-            updateStatus = "You have the latest version."
+            updateStatus = L("settings.updatesCurrent")
             updateURL = nil
         case .available(let version, let url):
-            updateStatus = "Version \(version) is available."
+            updateStatus = L("settings.updatesAvailable", version)
             updateURL = url
         case .failed:
-            updateStatus = "Couldn't reach GitHub. Try again later."
+            updateStatus = L("settings.updatesFailed")
             updateURL = nil
         }
         checking = false
@@ -64,8 +64,8 @@ struct SettingsView: View {
                 LabeledContent {
                     ShortcutRecorder(model: model)
                 } label: {
-                    Text("Keyboard Shortcut")
-                    Text("Opens the snooze panel for the window you're using.")
+                    Text(L("settings.shortcut"))
+                    Text(L("settings.shortcutHint"))
                     if !model.shortcutMessage.isEmpty {
                         Text(model.shortcutMessage).foregroundStyle(.red)
                     }
@@ -73,61 +73,61 @@ struct SettingsView: View {
                 Picker(selection: $model.evening) {
                     ForEach(model.times, id: \.self) { Text(Format.clock($0)).tag($0) }
                 } label: {
-                    Text("This Evening")
-                    Text("What “this evening” and “tonight” mean.")
+                    Text(L("settings.evening"))
+                    Text(L("settings.eveningHint"))
                 }
                 Picker(selection: $model.morning) {
                     ForEach(model.times, id: \.self) { Text(Format.clock($0)).tag($0) }
                 } label: {
-                    Text("Morning")
-                    Text("Used by “tomorrow morning”, “next week” and dates without a time.")
+                    Text(L("settings.morning"))
+                    Text(L("settings.morningHint"))
                 }
                 Picker(selection: $model.bringToFront) {
-                    Text("Show It Without Switching to It").tag(false)
-                    Text("Bring It to the Front").tag(true)
+                    Text(L("settings.returnQuiet")).tag(false)
+                    Text(L("settings.returnFront")).tag(true)
                 } label: {
-                    Text("When a Window Comes Back")
-                    Text("A notification tells you either way.")
+                    Text(L("settings.return"))
+                    Text(L("settings.returnHint"))
                 }
                 .pickerStyle(.radioGroup)
             } header: {
-                Text("Snoozing")
+                Text(L("settings.snoozing"))
             }
 
-            Section("General") {
+            Section(L("settings.general")) {
                 Toggle(isOn: Binding(get: { model.launchAtLogin }, set: { model.setLaunchAtLogin($0) })) {
-                    Text("Launch at Login")
-                    Text("Bring Later has to be running to bring windows back.")
+                    Text(L("settings.launchAtLogin"))
+                    Text(L("settings.launchHint"))
                 }
                 LabeledContent {
                     if model.accessGranted {
-                        Text("Allowed").foregroundStyle(.secondary)
+                        Text(L("settings.allowed")).foregroundStyle(.secondary)
                     } else {
-                        Button("Open System Settings") { Access.openSettings() }
+                        Button(L("settings.openSystemSettings")) { Access.openSettings() }
                     }
                 } label: {
-                    Text("Accessibility")
-                    Text("Needed to hide and restore other apps' windows.")
+                    Text(L("settings.accessibility"))
+                    Text(L("settings.accessibilityHint"))
                 }
             }
 
-            Section("About") {
-                LabeledContent("Version", value: Updates.current)
+            Section(L("settings.about")) {
+                LabeledContent(L("settings.version"), value: Updates.current)
                 LabeledContent {
                     HStack {
                         if let url = model.updateURL {
-                            Button("Download") { NSWorkspace.shared.open(url) }
+                            Button(L("settings.download")) { NSWorkspace.shared.open(url) }
                         }
-                        Button("Check for Updates") { Task { await model.checkForUpdates() } }
+                        Button(L("settings.checkUpdates")) { Task { await model.checkForUpdates() } }
                             .disabled(model.checking)
                     }
                 } label: {
-                    Text("Updates")
+                    Text(L("settings.updates"))
                     Text(model.updateStatus)
                 }
                 HStack(spacing: 16) {
-                    Link("Source Code", destination: URL(string: "https://github.com/shivashis-adhikari/bring-later")!)
-                    Link("Report a Problem", destination: URL(string: "https://github.com/shivashis-adhikari/bring-later/issues/new")!)
+                    Link(L("settings.source"), destination: URL(string: "https://github.com/shivashis-adhikari/bring-later")!)
+                    Link(L("settings.report"), destination: URL(string: "https://github.com/shivashis-adhikari/bring-later/issues/new")!)
                 }
             }
         }
@@ -147,11 +147,11 @@ private struct ShortcutRecorder: View {
         Button {
             recording ? stop() : start()
         } label: {
-            Text(recording ? "Press a Shortcut" : model.shortcut.display)
+            Text(recording ? L("settings.shortcutRecord") : model.shortcut.display)
                 .frame(minWidth: 110)
                 .monospacedDigit()
         }
-        .accessibilityLabel(recording ? "Recording. Press the new shortcut." : "Keyboard shortcut \(model.shortcut.display). Click to change.")
+        .accessibilityLabel(recording ? L("settings.shortcutRecording") : L("settings.shortcutLabel", model.shortcut.display))
         .onDisappear(perform: stop)
     }
 
@@ -165,11 +165,11 @@ private struct ShortcutRecorder: View {
                 return nil
             }
             guard let shortcut = Shortcut(event: event), shortcut.isValid else {
-                model.shortcutMessage = "Use ⌘ or ⌃ together with another key."
+                model.shortcutMessage = L("settings.shortcutInvalid")
                 return nil
             }
             guard model.applyShortcut(shortcut) else {
-                model.shortcutMessage = "Another app is already using \(shortcut.display). Try a different one."
+                model.shortcutMessage = L("settings.shortcutTaken", shortcut.display)
                 return nil
             }
             model.shortcut = shortcut
